@@ -1,0 +1,11 @@
+{
+  "routes": {
+    "sign-in": "auth/sign-in",
+    "sign-up": "auth/sign-up",
+    "all-products": "user/all",
+    "single-product": "user/product/",
+    "add-to-cart": "user/cart/",
+    "user-cart": "user/user-cart",
+    "remove-from-cart": "user/cart-remove/"
+  }
+}

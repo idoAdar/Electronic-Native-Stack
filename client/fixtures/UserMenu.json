@@ -1,0 +1,28 @@
+{
+  "menu": [
+    {
+      "id": 0,
+      "title": "Home",
+      "route": "home",
+      "icon": 0
+    },
+    {
+      "id": 1,
+      "title": "Cart",
+      "route": "cart",
+      "icon": 1
+    },
+    {
+      "id": 2,
+      "title": "New Product",
+      "route": "new-product",
+      "icon": 2
+    },
+    {
+      "id": 3,
+      "title": "Logout",
+      "route": null,
+      "icon": 3
+    }
+  ]
+}
