@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StatusBar} from 'react-native';
+import {View, Image, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSpinner} from '../../redux/reducers/userSlice';
 import {removeFromCart} from '../../redux/actions/userActions';
@@ -59,11 +59,18 @@ const CartScreen = ({navigation}) => {
     <View style={styles.screen}>
       <StatusBar barStyle={'light-content'} backgroundColor={colors.primary} />
       <AppHeader />
-      <View style={styles.titleContainer}>
-        {productsCart.length > 0 && (
+      {productsCart.length > 0 && (
+        <View style={styles.titleContainer}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/images/stock-pngrepo-com.png')}
+              resizeMode={'contain'}
+              style={styles.image}
+            />
+          </View>
           <TextElement customStyle={styles.title}>Cart</TextElement>
-        )}
-      </View>
+        </View>
+      )}
       <CartList
         cartList={productsCart}
         openModal={openModal}
@@ -91,12 +98,24 @@ const styles = EStyleSheet.create({
   },
   titleContainer: {
     height: hp('8%'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'red',
   },
   title: {
     color: colors.black,
     fontSize: '1.4rem',
     textAlign: 'center',
     marginVertical: '1rem',
+  },
+  imageContainer: {
+    width: '4rem',
+    height: '4rem',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
 

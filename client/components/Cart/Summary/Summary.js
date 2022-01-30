@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 // Components
 import TextElement from '../../Reusable/TextElement/TextElement';
@@ -17,15 +18,18 @@ import {
 const Summary = ({sum, productsCart}) => {
   const [calcTax, setCalcTax] = useState(0);
   const {userCart} = useSelector(state => state.userSlice);
+  const navigation = useNavigation();
 
   useEffect(() => {
     setCalcTax(sum * 0.07);
   }, [userCart]);
 
+  const checkoutNavigation = () => navigation.navigate('checkout');
+
   return (
     <View style={styles.summaryContainer}>
       <TextElement customStyle={styles.summaryText}>Summary</TextElement>
-      <View style={{}}>
+      <View>
         <TextElement customStyle={styles.taxText}>
           Tax: {calcTax.toFixed(2)}$
         </TextElement>
@@ -37,7 +41,7 @@ const Summary = ({sum, productsCart}) => {
         titleColor={productsCart.length > 0 ? colors.white : colors.greyish}
         fontWeight
         customStyle={styles.checkoutButton}
-        onPress={() => {}}
+        onPress={productsCart.length > 0 ? checkoutNavigation : null}
       />
     </View>
   );

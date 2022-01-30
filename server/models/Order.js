@@ -8,12 +8,24 @@ const orderSchema = new Schema({
     ref: 'User',
   },
   orderItems: [],
-  shippingAddress: {
-    type: Object,
+  fullName: {
+    type: String,
+    required: true,
+  },
+  creditCard: {
+    type: String,
+    required: true,
+  },
+  cvv: {
+    type: Number,
     required: true,
   },
   paymentMethod: {
     type: String,
+    required: true,
+  },
+  shippingAddress: {
+    type: Object,
     required: true,
   },
   shippingPrice: {

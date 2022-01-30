@@ -6,6 +6,7 @@ import HomeScreen from '../containers/HomeScreen/HomeScreen';
 import ProductScreen from '../containers/ProductScreen/ProductScreen';
 import LoadingScreen from '../containers/LoadingScreen/LoadingScreen';
 import CartScreen from '../containers/CartScreen/CartScreen';
+import CheckoutScreen from '../containers/CheckoutScreen/CheckoutScreen';
 import SignInScreen from '../containers/SignInScreen/SignInScreen';
 import SignUpScreen from '../containers/SignUpScreen/SignUpScreen';
 
@@ -17,6 +18,7 @@ export const UserStackNavigation = () => {
       <UserStackNavigator.Screen name={'home'} component={HomeScreen} />
       <UserStackNavigator.Screen name={'product'} component={ProductScreen} />
       <UserStackNavigator.Screen name={'cart'} component={CartScreen} />
+      <UserStackNavigator.Screen name={'checkout'} component={CheckoutScreen} />
     </UserStackNavigator.Navigator>
   );
 };
