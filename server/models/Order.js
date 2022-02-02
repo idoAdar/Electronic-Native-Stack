@@ -28,6 +28,10 @@ const orderSchema = new Schema({
     type: Object,
     required: true,
   },
+  phone: {
+    type: String,
+    required: true,
+  },
   shippingPrice: {
     type: Number,
     required: true,

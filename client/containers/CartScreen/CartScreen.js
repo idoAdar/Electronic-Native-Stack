@@ -101,7 +101,6 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
   },
   title: {
     color: colors.black,

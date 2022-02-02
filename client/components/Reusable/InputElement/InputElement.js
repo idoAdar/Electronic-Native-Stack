@@ -70,7 +70,6 @@ const styles = EStyleSheet.create({
   InputElementConainer: {
     height: hp('8.6%'),
     justifyContent: 'space-between',
-    // backgroundColor: 'red',
     marginVertical: 1,
   },
   inputContainer: {
