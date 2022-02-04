@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 
 // Components
 import TextElement from '../../Reusable/TextElement/TextElement';
@@ -15,16 +14,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const Summary = ({sum, productsCart}) => {
+const Summary = ({sum, productsCart, checkoutNavigation}) => {
   const [calcTax, setCalcTax] = useState(0);
   const {userCart} = useSelector(state => state.userSlice);
-  const navigation = useNavigation();
 
   useEffect(() => {
     setCalcTax(sum * 0.07);
   }, [userCart]);
-
-  const checkoutNavigation = () => navigation.navigate('checkout');
 
   return (
     <View style={styles.summaryContainer}>

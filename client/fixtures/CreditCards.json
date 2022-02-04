@@ -1,0 +1,34 @@
+{
+  "creditCards": [
+    {
+      "id": 0,
+      "title": "Amex",
+      "value": "amex",
+      "icon": 0
+    },
+    {
+      "id": 1,
+      "title": "Diners",
+      "value": "diners",
+      "icon": 1
+    },
+    {
+      "id": 2,
+      "title": "Electron",
+      "value": "electron",
+      "icon": 2
+    },
+    {
+      "id": 3,
+      "title": "MasterCard",
+      "value": "master-card",
+      "icon": 3
+    },
+    {
+      "id": 4,
+      "title": "Visa",
+      "value": "visa",
+      "icon": 4
+    }
+  ]
+}

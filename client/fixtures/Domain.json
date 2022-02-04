@@ -1,3 +1,4 @@
 {
-  "domain": "http://10.0.0.5:5000/"
+  "domain": "http://10.0.0.6:5000/",
+  "NOTICE": "For sending http request from a phone to nodejs server that runs on a pc we must check the IP Adreess of the pc and concat it with the port"
 }

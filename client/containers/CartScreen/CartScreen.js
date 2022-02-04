@@ -38,6 +38,9 @@ const CartScreen = ({navigation}) => {
 
   const homeNavigate = () => navigation.navigate('home');
 
+  const checkoutNavigation = () =>
+    navigation.navigate('checkout', {productsCart});
+
   useEffect(() => {
     if (userCart) {
       userCart.cart.forEach(cartItem => {
@@ -76,7 +79,11 @@ const CartScreen = ({navigation}) => {
         openModal={openModal}
         homeNavigate={homeNavigate}
       />
-      <Summary sum={userCart.sum} productsCart={productsCart} />
+      <Summary
+        sum={userCart.sum}
+        productsCart={productsCart}
+        checkoutNavigation={checkoutNavigation}
+      />
       <Modalize
         ref={modalizeRef}
         snapPoint={hp('25%')}
@@ -97,7 +104,7 @@ const styles = EStyleSheet.create({
     backgroundColor: colors.white,
   },
   titleContainer: {
-    height: hp('8%'),
+    height: hp('12%'),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

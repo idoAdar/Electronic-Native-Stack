@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
@@ -13,12 +13,26 @@ import ButtonElement from '../../components/Reusable/ButtonElement/ButtonElement
 import {colors} from '../../assets/colors/colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import CreditCardIcon from '../../assets/icons/credit-card-illustration.svg';
+import DefaultCreditCard from '../../assets/icons/defaultCreditCard.svg';
+import AmexIcon from '../../assets/icons/amexIcon.svg';
+import DinersIcon from '../../assets/icons/dinersIcon.svg';
+import ElectronIcon from '../../assets/icons/electronIcon.svg';
+import MaestroIcon from '../../assets/icons/maestroIcon.svg';
+import VisaIcon from '../../assets/icons/visaIcon.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const CCForm = ({shippingTax, totalPrice, openModal}) => {
+const creditCardsSvgs = [
+  <AmexIcon />,
+  <DinersIcon />,
+  <ElectronIcon />,
+  <MaestroIcon />,
+  <VisaIcon />,
+];
+
+const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
   const initState = {
@@ -27,23 +41,32 @@ const CCForm = ({shippingTax, totalPrice, openModal}) => {
     cvv: '',
     paymentMethod: '',
     shippingAddress: '',
-    shippingPrice: '',
-    totalPrice: '',
+    shippingPrice: shippingTax,
+    totalPrice,
   };
 
   const schemaValidation = Yup.object().shape({
-    fullName: Yup.string().required('set fullname'),
-    creditCard: Yup.string().required('set cc number'),
-    cvv: Yup.string().required('set cvv'),
-    shippingAddress: Yup.string().required('set distination'),
+    fullName: Yup.string().required('Fullname is required'),
+    shippingAddress: Yup.string().required('Distination is required'),
+    creditCard: Yup.string().required('CC number is required'),
+    cvv: Yup.string().required('CVV'),
   });
 
   const onCheckboxCheck = () => setIsCheckboxChecked(!isCheckboxChecked);
 
   const onSend = (values, actions) => {
-    console.log(values);
+    const collectData = {
+      ...values,
+      paymentMethod: paymentMethod.method,
+    };
+    console.log(collectData);
     actions.resetForm();
   };
+
+  let currectCreditCard = <DefaultCreditCard />;
+  if (paymentMethod) {
+    currectCreditCard = creditCardsSvgs[paymentMethod.icon];
+  }
 
   return (
     <Formik
@@ -54,10 +77,16 @@ const CCForm = ({shippingTax, totalPrice, openModal}) => {
         <View style={styles.centered}>
           <View style={styles.summaryContainer}>
             <TextElement customStyle={styles.summaryText}>
-              Shipping Price: {shippingTax.toFixed(2)}$
+              Shipping Price:{' '}
+              <TextElement customStyle={styles.caynFont}>
+                {shippingTax}$
+              </TextElement>
             </TextElement>
             <TextElement customStyle={styles.summaryText}>
-              Total Price: {totalPrice.toFixed(2)}$
+              Total Price:{' '}
+              <TextElement customStyle={styles.caynFont}>
+                {totalPrice}$
+              </TextElement>
             </TextElement>
           </View>
           <InputElement
@@ -84,6 +113,7 @@ const CCForm = ({shippingTax, totalPrice, openModal}) => {
               isTouched={touched.creditCard}
               errorMsg={errors.creditCard}
               holder={'Credit Card'}
+              keyboard
               customStyle={styles.input}
             />
             <InputElement
@@ -93,27 +123,19 @@ const CCForm = ({shippingTax, totalPrice, openModal}) => {
               isTouched={touched.cvv}
               errorMsg={errors.cvv}
               holder={'CVV'}
+              keyboard
               customStyle={styles.inputHalf}
             />
             <View style={styles.paymentMethodContainer}>
               <TouchableOpacity
                 onPress={openModal}
                 activeOpacity={0.6}
-                style={{
-                  height: hp('6.6%'),
-                  borderWidth: 1,
-                  backgroundColor: colors.light,
-                  borderColor: colors.greyish,
-                }}></TouchableOpacity>
+                style={styles.paymentMethod}>
+                {currectCreditCard}
+              </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              width: wp('85%'),
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.checkboxContainer}>
             <Checkbox
               color={colors.primary}
               uncheckedColor={colors.greyish}
@@ -122,13 +144,13 @@ const CCForm = ({shippingTax, totalPrice, openModal}) => {
             />
             <TextElement>I agree to the Terms and Conditions</TextElement>
           </View>
-          <View>
+          <View style={styles.imageContainer}>
             <CreditCardIcon />
           </View>
           <ButtonElement
             title={'ORDER NOW!'}
             onPress={handleSubmit}
-            bgColor={colors.primary}
+            bgColor={isCheckboxChecked ? colors.primary : colors.greyish}
             titleColor={colors.white}
             fontWeight
           />
@@ -144,6 +166,8 @@ const styles = EStyleSheet.create({
   },
   input: {
     width: wp('42.5%'),
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
     borderRadius: 0,
   },
   inputHalf: {
@@ -156,13 +180,36 @@ const styles = EStyleSheet.create({
     borderRadius: 0,
     marginVertical: 1,
   },
+  paymentMethod: {
+    height: hp('6.7%'),
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.light,
+    borderColor: colors.greyish,
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
+  },
   summaryContainer: {
     flexDirection: 'row',
     width: wp('85%'),
     justifyContent: 'space-between',
   },
+  imageContainer: {
+    marginVertical: '1rem',
+  },
+  checkboxContainer: {
+    width: wp('85%'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   summaryText: {
     fontSize: '0.8rem',
+  },
+  caynFont: {
+    fontSize: '0.8rem',
+    color: colors.cyan,
   },
 });
 
