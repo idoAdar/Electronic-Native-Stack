@@ -63,3 +63,27 @@ export const removeFromCartAsync = async productId => {
     console.log(error.response);
   }
 };
+
+export const fetchOrdersAsync = async () => {
+  try {
+    const {token} = await fetchFromStorage();
+    const {data} = await axios.get(domain + routes['orders-list'], {
+      headers: {Authentication: `Bearer ${token}`},
+    });
+    return data;
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+
+export const createOrderAsync = async order => {
+  try {
+    const {token} = await fetchFromStorage();
+    const {data} = await axios.post(domain + routes['create-order'], order, {
+      headers: {Authentication: `Bearer ${token}`},
+    });
+    return data;
+  } catch (error) {
+    console.log(error.response);
+  }
+};

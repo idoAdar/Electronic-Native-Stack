@@ -2,7 +2,6 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Containers
-import HomeScreen from '../containers/HomeScreen/HomeScreen';
 import ProductScreen from '../containers/ProductScreen/ProductScreen';
 import LoadingScreen from '../containers/LoadingScreen/LoadingScreen';
 import CartScreen from '../containers/CartScreen/CartScreen';
@@ -15,7 +14,6 @@ export const UserStackNavigation = () => {
 
   return (
     <UserStackNavigator.Navigator screenOptions={{headerShown: false}}>
-      <UserStackNavigator.Screen name={'home'} component={HomeScreen} />
       <UserStackNavigator.Screen name={'product'} component={ProductScreen} />
       <UserStackNavigator.Screen name={'cart'} component={CartScreen} />
       <UserStackNavigator.Screen name={'checkout'} component={CheckoutScreen} />

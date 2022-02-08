@@ -1,11 +1,20 @@
 import React, {useState, useRef} from 'react';
-import {View, Image, TouchableOpacity, StatusBar} from 'react-native';
-import {useSelector} from 'react-redux';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  KeyboardAvoidingView,
+  Keyboard,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {resetUserCart} from '../../redux/reducers/userSlice';
 
 // Components
 import CCForm from '../../components/Forms/CCForm';
 import CheckoutList from '../../components/Checkout/CheckoutList/CheckoutList';
 import CCModal from '../../components/Modals/CCModal/CCModal';
+import CheckoutModal from '../../components/Modals/CheckoutModal/CheckoutModal';
 import TextElement from '../../components/Reusable/TextElement/TextElement';
 import AppHeader from '../../components/AppHeader/AppHeader';
 import {Modalize} from 'react-native-modalize';
@@ -19,13 +28,17 @@ import {
 } from 'react-native-responsive-screen';
 
 const CheckoutScreen = ({navigation, route}) => {
-  const {userCart, isLoading} = useSelector(state => state.userSlice);
+  const {userCart, message} = useSelector(state => state.userSlice);
   const [calcShippingTax, setCalcShippingTax] = useState(userCart.sum * 0.07);
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState({method: 'amex', icon: 0});
+  const [modalType, setModalType] = useState(null);
   const checkoutProductsList = route.params.productsCart;
   const modalizeRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const openModal = () => {
+  const openModal = async type => {
+    Keyboard.dismiss();
+    await setModalType(type);
     modalizeRef.current?.open();
   };
 
@@ -34,48 +47,62 @@ const CheckoutScreen = ({navigation, route}) => {
     modalizeRef.current?.close();
   };
 
-  const cartNavigate = () => navigation.navigate('cart');
+  const cartNavigate = () => navigation.goBack();
+
+  const ordersNavigate = () => {
+    navigation.navigate('drawer-main', {screen: 'orders-tab'});
+    dispatch(resetUserCart());
+  };
 
   return (
     <View style={styles.screen}>
       <StatusBar barStyle={'light-content'} backgroundColor={colors.primary} />
       <AppHeader />
-      <View style={styles.checkoutContainer}>
-        <View style={styles.titleContainer}>
-          <TouchableOpacity
-            onPress={cartNavigate}
-            activeOpacity={0.6}
-            style={styles.backContainer}>
-            <Image
-              source={require('../../assets/images/back.png')}
-              resizeMode={'contain'}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <TextElement customStyle={styles.title}>Checkout</TextElement>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require('../../assets/images/checkout.png')}
-              resizeMode={'contain'}
-              style={styles.image}
-            />
+      <KeyboardAvoidingView behavior={'position'} keyboardVerticalOffset={-140}>
+        <View style={styles.checkoutContainer}>
+          <View style={styles.titleContainer}>
+            <TouchableOpacity
+              onPress={cartNavigate}
+              activeOpacity={0.6}
+              style={styles.backContainer}>
+              <Image
+                source={require('../../assets/images/back.png')}
+                resizeMode={'contain'}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+            <TextElement customStyle={styles.title}>Checkout</TextElement>
+            <View style={styles.imageContainer}>
+              <Image
+                source={require('../../assets/images/checkout.png')}
+                resizeMode={'contain'}
+                style={styles.image}
+              />
+            </View>
           </View>
+
+          <View style={styles.checkoutItemsContainer}>
+            <CheckoutList checkoutProductsList={checkoutProductsList} />
+          </View>
+          <CCForm
+            shippingTax={calcShippingTax.toFixed(2)}
+            totalPrice={(userCart?.sum + calcShippingTax).toFixed(2)}
+            checkoutProductsList={checkoutProductsList}
+            paymentMethod={paymentMethod}
+            openModal={openModal}
+          />
         </View>
-        <View style={styles.checkoutItemsContainer}>
-          <CheckoutList checkoutProductsList={checkoutProductsList} />
-        </View>
-        <CCForm
-          shippingTax={calcShippingTax.toFixed(2)}
-          totalPrice={(userCart.sum + calcShippingTax).toFixed(2)}
-          paymentMethod={paymentMethod}
-          openModal={openModal}
-        />
-      </View>
+      </KeyboardAvoidingView>
       <Modalize
         ref={modalizeRef}
-        snapPoint={hp('52%')}
-        panGestureEnabled={false}>
-        <CCModal getPaymentMethod={getPaymentMethod} />
+        snapPoint={modalType === 'creditCards' ? hp('52%') : hp('25%')}
+        panGestureEnabled={false}
+        closeOnOverlayTap={modalType === 'creditCards' ? true : false}>
+        {modalType === 'creditCards' ? (
+          <CCModal getPaymentMethod={getPaymentMethod} />
+        ) : (
+          <CheckoutModal ordersNavigate={ordersNavigate} message={message} />
+        )}
       </Modalize>
     </View>
   );

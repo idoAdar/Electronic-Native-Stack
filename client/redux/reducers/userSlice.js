@@ -4,6 +4,7 @@ const initialState = {
   products: null,
   singleProduct: null,
   userCart: null,
+  orders: null,
   message: null,
   isLoading: true,
 };
@@ -46,6 +47,18 @@ export const userSlice = createSlice({
       state.userCart = action.payload;
       state.isLoading = false;
     },
+    setOrders: (state, action) => {
+      state.orders = action.payload;
+      state.isLoading = false;
+    },
+    setNewOrder: (state, action) => {
+      state.message = action.payload;
+      state.isLoading = false;
+    },
+    resetUserCart: state => {
+      state.userCart.cart = [];
+      state.userCart.sum = 0;
+    },
     setSpinner: state => {
       state.isLoading = true;
     },
@@ -58,6 +71,9 @@ export const {
   setUserCart,
   setAddToCart,
   setRemoveFromCart,
+  setOrders,
+  setNewOrder,
+  resetUserCart,
   setSpinner,
 } = userSlice.actions;
 

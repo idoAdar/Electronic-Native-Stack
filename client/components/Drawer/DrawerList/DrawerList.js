@@ -20,6 +20,7 @@ const DrawerList = ({logout}) => {
       renderItem={itemData => (
         <DrawerItem
           key={itemData.item.id}
+          section={itemData.item.section}
           title={itemData.item.title}
           route={itemData.item.route}
           icon={itemData.item.icon}

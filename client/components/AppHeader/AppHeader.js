@@ -54,6 +54,7 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: '1rem',
+    zIndex: 10,
     backgroundColor: colors.primary,
   },
   headerLeft: {
@@ -61,8 +62,8 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
   },
   headerLogo: {
-    width: '2.6rem',
-    height: '2.6rem',
+    width: '3rem',
+    height: '3rem',
   },
   headerTitle: {
     fontSize: '1.2rem',

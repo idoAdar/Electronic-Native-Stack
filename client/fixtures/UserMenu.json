@@ -3,20 +3,16 @@
     {
       "id": 0,
       "title": "Home",
-      "route": "home",
-      "icon": 0
+      "section": "drawer-main",
+      "route": "home-tab",
+      "icon": 1
     },
     {
       "id": 1,
       "title": "Cart",
+      "section": "main",
       "route": "cart",
       "icon": 1
-    },
-    {
-      "id": 2,
-      "title": "New Product",
-      "route": "new-product",
-      "icon": 2
     },
     {
       "id": 3,

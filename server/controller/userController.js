@@ -6,6 +6,8 @@ const {
   userCart,
   removeProduct,
   fetchUserCart,
+  createOrder,
+  getUserOrders,
 } = require('../logic/userLogic');
 
 const route = express.Router();
@@ -39,5 +41,17 @@ route.delete('/cart-remove/:productId', isAuth, removeProduct);
 // Desc: Fetch user cart
 // Security: Private
 route.get('/user-cart', isAuth, fetchUserCart);
+
+// Url: http://localhost:5000/user/order
+// Method: POST
+// Desc: Create order
+// Security: Private
+route.post('/order', isAuth, createOrder);
+
+// Url: http://localhost:5000/user/orders
+// Method: GET
+// Desc: Fetch user ordres
+// Security: Private
+route.get('/orders-list', isAuth, getUserOrders);
 
 module.exports = route;

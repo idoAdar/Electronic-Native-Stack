@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {useSelector, useDispatch} from 'react-redux';
+import {setSpinner} from '../../redux/reducers/userSlice';
+import {createOrder} from '../../redux/actions/userActions';
 
 // Components
 import {Checkbox} from 'react-native-paper';
@@ -13,7 +16,6 @@ import ButtonElement from '../../components/Reusable/ButtonElement/ButtonElement
 import {colors} from '../../assets/colors/colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import CreditCardIcon from '../../assets/icons/credit-card-illustration.svg';
-import DefaultCreditCard from '../../assets/icons/defaultCreditCard.svg';
 import AmexIcon from '../../assets/icons/amexIcon.svg';
 import DinersIcon from '../../assets/icons/dinersIcon.svg';
 import ElectronIcon from '../../assets/icons/electronIcon.svg';
@@ -32,17 +34,26 @@ const creditCardsSvgs = [
   <VisaIcon />,
 ];
 
-const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
+const CCForm = ({
+  shippingTax,
+  totalPrice,
+  paymentMethod,
+  checkoutProductsList,
+  openModal,
+}) => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const {isLoading} = useSelector(state => state.userSlice);
+  const dispatch = useDispatch();
 
   const initState = {
     fullName: '',
     creditCard: '',
     cvv: '',
-    paymentMethod: '',
+    paymentMethod: 'visa',
     shippingAddress: '',
     shippingPrice: shippingTax,
     totalPrice,
+    orderItems: '',
   };
 
   const schemaValidation = Yup.object().shape({
@@ -54,16 +65,19 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
 
   const onCheckboxCheck = () => setIsCheckboxChecked(!isCheckboxChecked);
 
-  const onSend = (values, actions) => {
+  const onSend = async (values, actions) => {
+    dispatch(setSpinner());
     const collectData = {
       ...values,
       paymentMethod: paymentMethod.method,
+      orderItems: checkoutProductsList,
     };
-    console.log(collectData);
     actions.resetForm();
+    await dispatch(createOrder(collectData));
+    openModal('order');
   };
 
-  let currectCreditCard = <DefaultCreditCard />;
+  let currectCreditCard = <VisaIcon />;
   if (paymentMethod) {
     currectCreditCard = creditCardsSvgs[paymentMethod.icon];
   }
@@ -94,6 +108,7 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
             onType={handleChange('fullName')}
             onBlur={handleBlur('fullName')}
             isTouched={touched.fullName}
+            maxLength={32}
             errorMsg={errors.fullName}
             holder={'Full Name'}
           />
@@ -102,6 +117,7 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
             onType={handleChange('shippingAddress')}
             onBlur={handleBlur('shippingAddress')}
             isTouched={touched.shippingAddress}
+            maxLength={32}
             errorMsg={errors.shippingAddress}
             holder={'Shipping Address'}
           />
@@ -111,6 +127,7 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
               onType={handleChange('creditCard')}
               onBlur={handleBlur('creditCard')}
               isTouched={touched.creditCard}
+              maxLength={16}
               errorMsg={errors.creditCard}
               holder={'Credit Card'}
               keyboard
@@ -121,6 +138,7 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
               onType={handleChange('cvv')}
               onBlur={handleBlur('cvv')}
               isTouched={touched.cvv}
+              maxLength={3}
               errorMsg={errors.cvv}
               holder={'CVV'}
               keyboard
@@ -128,7 +146,7 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
             />
             <View style={styles.paymentMethodContainer}>
               <TouchableOpacity
-                onPress={openModal}
+                onPress={openModal.bind(this, 'creditCards')}
                 activeOpacity={0.6}
                 style={styles.paymentMethod}>
                 {currectCreditCard}
@@ -149,10 +167,11 @@ const CCForm = ({shippingTax, totalPrice, paymentMethod, openModal}) => {
           </View>
           <ButtonElement
             title={'ORDER NOW!'}
-            onPress={handleSubmit}
+            onPress={isCheckboxChecked ? handleSubmit : null}
             bgColor={isCheckboxChecked ? colors.primary : colors.greyish}
             titleColor={colors.white}
             fontWeight
+            setSpinner={isLoading}
           />
         </View>
       )}

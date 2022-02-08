@@ -36,10 +36,11 @@ const CartScreen = ({navigation}) => {
     closeModal();
   };
 
-  const homeNavigate = () => navigation.navigate('home');
+  const homeNavigate = () =>
+    navigation.navigate('drawer', {screen: 'drawer-main'});
 
   const checkoutNavigation = () =>
-    navigation.navigate('checkout', {productsCart});
+    navigation.navigate('main', {screen: 'checkout', params: {productsCart}});
 
   useEffect(() => {
     if (userCart) {

@@ -43,6 +43,9 @@ const CCModal = ({getPaymentMethod}) => {
 };
 
 const styles = EStyleSheet.create({
+  modalContainer: {
+    backgroundColor: colors.white,
+  },
   modalItem: {
     height: hp('10%'),
     paddingHorizontal: '2rem',

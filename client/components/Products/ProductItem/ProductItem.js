@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
+import {fetchSingleProduct} from '../../../redux/actions/userActions';
 import {setSpinner} from '../../../redux/reducers/userSlice';
 
 // Components
@@ -21,7 +22,8 @@ const ProductItem = ({name, image, brand, price, id}) => {
 
   const onProduct = async () => {
     await dispatch(setSpinner());
-    navigation.navigate('product', {product: {id}});
+    await dispatch(fetchSingleProduct(id));
+    navigation.navigate('main', {screen: 'product'});
   };
 
   return (

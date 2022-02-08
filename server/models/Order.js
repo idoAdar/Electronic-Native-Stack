@@ -17,7 +17,7 @@ const orderSchema = new Schema({
     required: true,
   },
   cvv: {
-    type: Number,
+    type: String,
     required: true,
   },
   paymentMethod: {
@@ -25,20 +25,16 @@ const orderSchema = new Schema({
     required: true,
   },
   shippingAddress: {
-    type: Object,
-    required: true,
-  },
-  phone: {
     type: String,
     required: true,
   },
   shippingPrice: {
-    type: Number,
+    type: String,
     required: true,
     default: 0,
   },
   totalPrice: {
-    type: Number,
+    type: String,
     required: true,
     default: 0,
   },

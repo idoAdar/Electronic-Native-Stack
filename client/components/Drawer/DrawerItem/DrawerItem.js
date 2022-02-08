@@ -20,14 +20,14 @@ const menuIcons = [
   <LogoutIcon />,
 ];
 
-const DrawerItem = ({title, route, icon, onLogout}) => {
+const DrawerItem = ({title, section, route, icon, onLogout}) => {
   const navigation = useNavigation();
 
   const onPressItem = () => {
     if (title === 'Logout') {
       return onLogout();
     }
-    navigation.navigate(route);
+    navigation.navigate(section, {screen: route});
   };
 
   return (

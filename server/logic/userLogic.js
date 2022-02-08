@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
+const Order = require('../models/Order');
 
 exports.getProducts = async (req, res, next) => {
   try {
@@ -126,6 +127,32 @@ exports.fetchUserCart = async (req, res, next) => {
       sum: 0,
     };
     res.status(200).json(newCart);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createOrder = async (req, res, next) => {
+  try {
+    const user = req.currentUser._id;
+    const orderDetails = req.body;
+    const newOrder = await Order({ user, ...orderDetails });
+    await Cart.findOneAndRemove({ user });
+    await newOrder.save();
+    return res.status(200).json({
+      message:
+        'Thank you for being our valued customer. We hope our product will meet your expectations. Let us know if you have any questions.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUserOrders = async (req, res, next) => {
+  try {
+    const user = req.currentUser._id;
+    const orders = await Order.find({ user });
+    res.status(200).json(orders);
   } catch (error) {
     next(error);
   }

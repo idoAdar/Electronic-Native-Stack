@@ -1,0 +1,16 @@
+{
+  "tabs": [
+    {
+      "tab": "HOME",
+      "section": "drawer-main",
+      "route": "home-tab",
+      "icon": 0
+    },
+    {
+      "tab": "ORDERS",
+      "section": "drawer-main",
+      "route": "orders-tab",
+      "icon": 1
+    }
+  ]
+}

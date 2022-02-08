@@ -6,6 +6,8 @@
     "single-product": "user/product/",
     "add-to-cart": "user/cart/",
     "user-cart": "user/user-cart",
-    "remove-from-cart": "user/cart-remove/"
+    "remove-from-cart": "user/cart-remove/",
+    "create-order": "user/order",
+    "orders-list": "user/orders-list"
   }
 }

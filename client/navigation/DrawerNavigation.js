@@ -1,8 +1,8 @@
 import React from 'react';
-import {View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 // Navigators
+import TabNavigation from './TabNavigation';
 import {UserStackNavigation} from './StackNavigation';
 
 // Screens
@@ -15,10 +15,8 @@ const DrawerNavigation = () => {
     <DrawerNavigator.Navigator
       drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{headerShown: false, drawerStyle: {width: '75%'}}}>
-      <DrawerNavigator.Screen
-        name={'drawer-main'}
-        component={UserStackNavigation}
-      />
+      <DrawerNavigator.Screen name={'drawer-main'} component={TabNavigation} />
+      <DrawerNavigator.Screen name={'main'} component={UserStackNavigation} />
     </DrawerNavigator.Navigator>
   );
 };

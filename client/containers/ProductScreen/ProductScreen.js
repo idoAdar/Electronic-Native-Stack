@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Image,
@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchSingleProduct} from '../../redux/actions/userActions';
+import {useSelector} from 'react-redux';
 
 // Components
 import {Modalize} from 'react-native-modalize';
@@ -24,21 +23,15 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const ProductScreen = ({route, navigation}) => {
+const ProductScreen = ({navigation}) => {
   const {singleProduct, isLoading} = useSelector(state => state.userSlice);
   const modalizeRef = useRef(null);
-  const productId = route.params.product.id;
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchSingleProduct(productId));
-  }, []);
-
-  const navigate = () => navigation.navigate('cart');
+  const navigate = () => navigation.navigate('main', {screen: 'cart'});
 
   const openModal = () => modalizeRef.current?.open();
 
-  const onBackIcon = () => navigation.goBack();
+  const onBackIcon = () => navigation.navigate('drawer-main', {screen: 'home'});
 
   let displayAmountModal = null;
   if (!isLoading && singleProduct) {

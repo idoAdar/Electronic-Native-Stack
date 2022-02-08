@@ -4,6 +4,8 @@ import {
   setUserCart,
   setAddToCart,
   setRemoveFromCart,
+  setOrders,
+  setNewOrder,
 } from '../reducers/userSlice';
 import {
   fetchProductsAsync,
@@ -11,6 +13,8 @@ import {
   fetchUserCartAsync,
   addToCartAsync,
   removeFromCartAsync,
+  fetchOrdersAsync,
+  createOrderAsync,
 } from '../requests/userRequests';
 
 // Fetch All Products
@@ -42,4 +46,16 @@ export const addToCart = (productId, quantity, price) => async dispatch => {
 export const removeFromCart = productId => async dispatch => {
   const response = await removeFromCartAsync(productId);
   dispatch(setRemoveFromCart(response));
+};
+
+// Fetch User Orders
+export const fetchOrders = () => async dispatch => {
+  const response = await fetchOrdersAsync();
+  dispatch(setOrders(response));
+};
+
+// Create New Order
+export const createOrder = order => async dispatch => {
+  const response = await createOrderAsync(order);
+  dispatch(setNewOrder(response.message));
 };

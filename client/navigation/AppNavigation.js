@@ -16,7 +16,10 @@ const AppNavigation = () => {
       <MainNavigator.Navigator screenOptions={{headerShown: false}}>
         {isAuth ? (
           <MainNavigator.Group>
-            <MainNavigator.Screen name={'main'} component={DrawerNavigation} />
+            <MainNavigator.Screen
+              name={'drawer'}
+              component={DrawerNavigation}
+            />
           </MainNavigator.Group>
         ) : (
           <MainNavigator.Group>

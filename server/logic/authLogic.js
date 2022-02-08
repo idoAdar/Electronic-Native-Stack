@@ -28,21 +28,6 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
-exports.signDetails = async (req, res, next) => {
-  try {
-    const user = req.currentUser;
-    const { country, city, phone } = req.body;
-
-    user.country = country;
-    user.city = city;
-    user.phone = phone;
-    await user.save();
-    res.status(200).json(user);
-  } catch (error) {
-    next(error);
-  }
-};
-
 exports.signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
